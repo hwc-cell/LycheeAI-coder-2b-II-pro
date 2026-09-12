@@ -179,8 +179,23 @@ python -m mlx_lm.fuse \
 
 ### Ollama（GGUF 版）
 
+尚未发布。GGUF 需要从 f16 全精度权重转换，而本仓库只有 MLX 4bit 版，
+无法直接转 GGUF —— 需要先跑一遍 `mlx_lm.fuse --de-quantize` 得到 f16，
+再用 llama.cpp 转换。如果你需要，可以提 issue，我优先排期。
+
+转换流程大致是：
+
 ```bash
-ollama run whcl412/LycheeAI-coder-2b-II-pro-GGUF
+# 1. 融合出 f16（不量化）
+python -m mlx_lm.fuse \
+  --model ./MiniCPM5-2B-MLX \
+  --adapter-path ./adapters \
+  --save-path ./LycheeAI-coder-2b-II-pro-f16 \
+  --de-quantize
+
+# 2. 转 GGUF（需要 llama.cpp）
+python llama.cpp/convert_hf_to_gguf.py ./LycheeAI-coder-2b-II-pro-f16 \
+  --outfile LycheeAI-coder-2b-II-pro-f16.gguf --outtype f16
 ```
 
 ---
