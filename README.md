@@ -29,8 +29,9 @@ library_name: mlx
 
 | 版本 | 大小 | 用途 | 下载 |
 |---|---|---|---|
-| **MLX 4bit** | 1.4 GB | Apple Silicon 开箱即用 | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro) |
-| **f16 (bf16)** | 5.03 GB | 二次量化、继续微调 | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-f16) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-f16) |
+| **MLX 4bit** | 1.42 GB | Apple Silicon 日常跑（最快最省内存） | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro) |
+| **MLX 无损 bf16** | 5.03 GB | 在 MLX 上二次量化 / 继续微调 / 质量基准 | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-MLX-bf16) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-MLX-bf16) |
+| **f16 (bf16)** | 5.03 GB | 同上（**与 MLX bf16 同一份权重**） | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-f16) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-f16) |
 | **GGUF** | 1.45 / 2.50 / 4.69 GB | Ollama、llama.cpp | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-GGUF) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-GGUF) |
 
 ---
@@ -94,7 +95,9 @@ python -m mlx_lm.server --model whcl412/LycheeAI-coder-2b-II-pro --port 8080
 
 ### transformers / GGUF
 
-MLX 4bit 格式 transformers 不能直接加载，需要 HF safetensors 用 **f16 版**。
+MLX 4bit 格式 transformers 不能直接加载，需要 HF safetensors 用**无损版**
+（[`-MLX-bf16`](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-MLX-bf16) 或等价的
+[`-f16`](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-f16)，两者是同一份权重）。
 GGUF 已发布三档（`q4_k_m` 1.45 GiB / `q8_0` 2.50 GiB / `f16` 4.69 GiB），仓库含 `Modelfile`：
 [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-GGUF) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-GGUF)。
 
@@ -409,8 +412,9 @@ Full weights live on the model hubs:
 
 | Build | Size | Use case |
 |---|---|---|
-| **MLX 4-bit** | 1.4 GB | ready to run on Apple Silicon |
-| **f16 (bf16)** | 5.03 GB | re-quantization, further fine-tuning |
+| **MLX 4-bit** | 1.42 GB | everyday use on Apple Silicon (fastest, smallest) |
+| **MLX lossless bf16** | 5.03 GB | re-quantization / further fine-tuning / quality baseline |
+| **f16 (bf16)** | 5.03 GB | same as above (**identical weights** to MLX bf16) |
 | **GGUF** | 1.45 / 2.50 / 4.69 GB | Ollama, llama.cpp |
 
 ---
@@ -431,7 +435,9 @@ python -m mlx_lm.server --model whcl412/LycheeAI-coder-2b-II-pro --port 8080
 
 ### transformers / GGUF
 
-MLX 4-bit cannot be loaded by transformers — use the f16 build for HF safetensors.
+MLX 4-bit cannot be loaded by transformers — use the lossless build
+([`-MLX-bf16`](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-MLX-bf16) or the equivalent
+[`-f16`](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-f16); identical weights).
 GGUF is published in three variants (`q4_k_m` 1.45 GiB / `q8_0` 2.50 GiB / `f16` 4.69 GiB) with a `Modelfile`:
 [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-GGUF) · [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-GGUF).
 
