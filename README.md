@@ -30,7 +30,8 @@ library_name: mlx
 | 版本 | 大小 | 用途 | 下载 |
 |---|---|---|---|
 | **MLX 4bit** | 1.4 GB | Apple Silicon 开箱即用 | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro) |
-| **f16 (bf16)** | 5.03 GB | 转 GGUF、二次量化、继续微调 | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-f16) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-f16) |
+| **f16 (bf16)** | 5.03 GB | 二次量化、继续微调 | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-f16) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-f16) |
+| **GGUF** | 1.45 / 2.50 / 4.69 GB | Ollama、llama.cpp | [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-GGUF) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-GGUF) |
 
 ---
 
@@ -94,7 +95,10 @@ python -m mlx_lm.server --model whcl412/LycheeAI-coder-2b-II-pro --port 8080
 ### transformers / GGUF
 
 MLX 4bit 格式 transformers 不能直接加载，需要 HF safetensors 用 **f16 版**。
-GGUF 尚未发布，可从 f16 版自行转换（`llama.cpp/convert_hf_to_gguf.py`）。
+GGUF 已发布三档（`q4_k_m` 1.45 GiB / `q8_0` 2.50 GiB / `f16` 4.69 GiB），仓库含 `Modelfile`：
+[ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-GGUF) · [HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-GGUF)。
+
+⚠️ Ollama 的自动 `tool_calls` 解析对本模型**不可靠**（模型按「直接输出 JSON」训练，不带包裹标签），生产环境请从 `content` 里自解析 JSON。
 
 ### 自己训练
 
@@ -406,7 +410,8 @@ Full weights live on the model hubs:
 | Build | Size | Use case |
 |---|---|---|
 | **MLX 4-bit** | 1.4 GB | ready to run on Apple Silicon |
-| **f16 (bf16)** | 5.03 GB | GGUF conversion, re-quantization, further fine-tuning |
+| **f16 (bf16)** | 5.03 GB | re-quantization, further fine-tuning |
+| **GGUF** | 1.45 / 2.50 / 4.69 GB | Ollama, llama.cpp |
 
 ---
 
@@ -427,7 +432,10 @@ python -m mlx_lm.server --model whcl412/LycheeAI-coder-2b-II-pro --port 8080
 ### transformers / GGUF
 
 MLX 4-bit cannot be loaded by transformers — use the f16 build for HF safetensors.
-GGUF is not published yet; convert it from the f16 build yourself (`llama.cpp/convert_hf_to_gguf.py`).
+GGUF is published in three variants (`q4_k_m` 1.45 GiB / `q8_0` 2.50 GiB / `f16` 4.69 GiB) with a `Modelfile`:
+[HF](https://huggingface.co/whcl412/LycheeAI-coder-2b-II-pro-GGUF) · [ModelScope](https://www.modelscope.cn/models/whcl412/LycheeAI-coder-2b-II-pro-GGUF).
+
+⚠️ Ollama's automatic `tool_calls` parsing is **unreliable** for this model (it was trained to emit bare JSON). For production, parse the JSON from `content` yourself.
 
 ---
 
